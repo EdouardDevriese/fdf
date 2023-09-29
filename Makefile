@@ -9,16 +9,15 @@ ERASE_LINE = "\\033[A\\033[K\\033[A"
 
 NAME = fdf
 
-CC = gcc
+CC = cc
 
-CFLAGS = -O2 -Wall -Wextra -Werror
+CFLAGS = -O3 -Wall -Wextra -Werror
 
-MLX_DIR = minilibx/
-MLX = $(MLX_DIR)libmlx.a
-MLX_FLAGS = #-g -L $(MLX_DIR) -l mlx -framework OpenGL -framework AppKit
+MLX_DIR = minilibx-linux/
+MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
 
 SRC_DIR = ./src/
-SRC_FILES = 
+SRC_FILES = main.c
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
 OBJ_DIR = ./obj/
@@ -38,12 +37,12 @@ all: $(NAME)
 
 $(NAME): $(LIB) $(OBJ)
 	@echo "Object files related to fdf created"
-	@gcc $(OBJ) $(MLX_FLAGS) $(LIB_FLAGS) -o $(NAME)
+	@$(CC) $(OBJ) $(MLX_FLAGS) $(LIB_FLAGS) -o $(NAME)
 	@echo "$(BOLD)$(NAME)$(RESET_FORMAT) [$(GREEN)OK$(RESET_FORMAT)]"
 
 $(OBJ_DIR)%.o:$(SRC_DIR)%.c $(HDR)
 	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -I$(HDR_DIR) -I$(LIB_INC) -I$(MLX_DIR) -c -o $@ $<
+	@$(CC) $(CFLAGS) -I$(HDR_DIR) -I$(LIB_INC) -I$(MLX_DIR) -c $< -o $@
 	@echo "Compiled: $*.o [$(GREEN)OK$(RESET_FORMAT)]"
 	@echo "$(ERASE_LINE)"
 
