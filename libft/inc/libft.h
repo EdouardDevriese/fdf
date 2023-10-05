@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 15:27:05 by wdevries          #+#    #+#             */
-/*   Updated: 2023/08/07 22:10:57 by warredevriese    ###   ########.fr       */
+/*   Updated: 2023/10/05 18:14:05 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void				ft_lstadd_back(t_list **lst, t_list *new);
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
-char				*get_next_line(int fd, char **line);
+int                 get_next_line(int fd, char **line);
 size_t				ft_strlen_gnl(const char *s);
 size_t				ft_strlcpy_gnl(char *dst, const char *src, size_t size);
 char				*ft_strchr_gnl(const char *s, int c);

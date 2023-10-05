@@ -11,7 +11,7 @@ NAME = fdf
 
 CC = cc
 
-CFLAGS = -O3 -Wall -Wextra -Werror
+CFLAGS = -O3 -Wall -Wextra -Werror -g
 
 MLX_DIR = minilibx-linux/
 MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
