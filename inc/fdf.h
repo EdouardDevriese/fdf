@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 13:09:12 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/05 18:49:55 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/06 16:18:02 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 # define FDF_H
 # define WINDOW_HEIGHT 750
-# define WINDOW_WIDHT 1250
+# define WINDOW_WIDTH 1250
 
 # include "mlx.h"
 # include "libft.h"
@@ -37,7 +37,7 @@ typedef struct      s_pointCoordinates
     int             z;
 }                   t_pointCoordinates;
 
-typedef struct      s_scalingInfo
+typedef struct      s_displayParams
 {
     int             minX;
     int             maxX;
@@ -47,7 +47,7 @@ typedef struct      s_scalingInfo
     int             scaleFactorY;
     int             translateX;
     int             translateY;
-}                   t_scalingInfo;
+}                   t_displayParams;
 
 typedef struct      s_pointPixels
 {
