@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 13:09:12 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/06 16:18:02 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:03:45 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+///////////////////////////////////////////////////////////////////////////////
+//STRUCTS//////////////////////////////////////////////////////////////////////
 
 typedef struct      s_mapInfo
 {
@@ -49,13 +51,22 @@ typedef struct      s_displayParams
     int             translateY;
 }                   t_displayParams;
 
-typedef struct      s_pointPixels
-{
-    int             x;
-    int             y;
-    int             color;
-}                   t_pointPixels;
+//////////////////////////////////////////////////////////////////////////////
+//FUNCTIONS////////////////////////////////////////////////////////////////////
 
+//UTILS//
+int     ft_openMapFile(const char *mapFile);
 
+//INFO//
+void    ft_getMapInfo(t_mapInfo *mapInfo, const char *mapFile);
+void    ft_initializeMap(t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo);
+
+//COORDINATES//
+void    ft_getMapCoordinates(const char *mapFile, t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo);
+void    ft_initializeMap(t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo);
+
+//DISPLAYPARAMS//
+void    ft_getDisplayParams(t_displayParams *displayParams, t_pointCoordinates **mapCoordinates, t_mapInfo mapInfo);
+void    ft_applyDisplayParams(t_displayParams displayParams, t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo);
 
 #endif
