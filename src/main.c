@@ -6,25 +6,26 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 13:35:54 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/06 17:21:34 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/07 14:55:03 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int     ft_openMapFile(const char *mapFile)
+static void ft_displayMap(t_pointCoordinates **mapCoordinates, t_mapInfo mapInfo)    
 {
-    int             fd;
+    void        *mlx;
+    void        *mlxWin;
+    t_imgData   img;
 
-    fd = open(mapFile, O_RDONLY);
-    if (fd == -1)
-        write(1, "System error\n", 13);
-    return (fd);
-}
-
-static void ft_displayMap(t_pointCoordinates **mapCoordinates)    
-{
-
+    (void)mapCoordinates;
+    mlx = mlx_init();
+    mlxWin = mlx_new_window(mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Fil de fer");
+    img.img = mlx_new_image(mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+    img.addr = mlx_get_data_addr(img.img, &img.bitsPerPixel, &img.lineLength, &img.endian);
+    ft_drawMap(mapCoordinates, mapInfo, &img);
+    mlx_put_image_to_window(mlx, mlxWin, img.img, 0, 0);
+    mlx_loop(mlx);
 }
 
 static void ft_createMap(const char *mapFile)
@@ -38,7 +39,8 @@ static void ft_createMap(const char *mapFile)
     ft_getMapCoordinates(mapFile, &mapCoordinates, mapInfo);
     ft_getDisplayParams(&displayParams, mapCoordinates, mapInfo);
     ft_applyDisplayParams(displayParams, &mapCoordinates, mapInfo);
-    /* ft_displayMap(mapPixel); */
+    ft_displayMap(mapCoordinates, mapInfo);
+    ft_freeMap(&mapCoordinates, mapInfo);
 }
 
 int     main(int argc, char **argv)
