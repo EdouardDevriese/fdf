@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:40:05 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/09 14:53:03 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:18:58 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void ft_fillData(t_pointCoordinates ***mapCoordinates, t_parsingUtils p, t_mapInfo *mapInfo)
 {
-    (*mapCoordinates)[p.row][p.column].x = (float)p.column;
-    (*mapCoordinates)[p.row][p.column].y = (float)p.row;
+    (*mapCoordinates)[p.row][p.column].x = (float)p.column * 12;
+    (*mapCoordinates)[p.row][p.column].y = (float)p.row * 12;
     (*mapCoordinates)[p.row][p.column].z = (float)p.height;
     if (p.height < mapInfo->minHeight)
         mapInfo->minHeight = p.height;
