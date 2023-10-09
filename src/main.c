@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 13:35:54 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/07 14:55:03 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:19:32 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void ft_createMap(const char *mapFile)
 
     ft_getMapInfo(&mapInfo, mapFile);
     ft_initializeMap(&mapCoordinates, mapInfo);
-    ft_getMapCoordinates(mapFile, &mapCoordinates, mapInfo);
+    ft_getMapCoordinates(mapFile, &mapCoordinates, &mapInfo);
     ft_getDisplayParams(&displayParams, mapCoordinates, mapInfo);
     ft_applyDisplayParams(displayParams, &mapCoordinates, mapInfo);
     ft_displayMap(mapCoordinates, mapInfo);

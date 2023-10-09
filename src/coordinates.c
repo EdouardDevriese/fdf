@@ -6,35 +6,43 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:40:05 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/09 11:43:27 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/09 14:53:03 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void ft_downloadHeightMap(int fd, t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo)
+static void ft_fillData(t_pointCoordinates ***mapCoordinates, t_parsingUtils p, t_mapInfo *mapInfo)
 {
-    int                 row;
-    int                 column;
-    char                *line;
-    char                **numbers;
+    (*mapCoordinates)[p.row][p.column].x = (float)p.column;
+    (*mapCoordinates)[p.row][p.column].y = (float)p.row;
+    (*mapCoordinates)[p.row][p.column].z = (float)p.height;
+    if (p.height < mapInfo->minHeight)
+        mapInfo->minHeight = p.height;
+    if (p.height > mapInfo->maxHeight)
+        mapInfo->maxHeight = p.height;
+}
 
-    row = -1;
-    while (++row < mapInfo.rowsY)
+static void ft_downloadHeightMap(int fd, t_pointCoordinates ***mapCoordinates, t_mapInfo *mapInfo)
+{
+    t_parsingUtils      p;
+
+    p.row = -1;
+    while (++p.row < mapInfo->rowsY)
     {
-        get_next_line(fd, &line);
-        numbers = ft_split(line, ' ');
-        column = -1;
-        while (++column < mapInfo.columnsX)
+        get_next_line(fd, &p.line);
+        p.numbers = ft_split(p.line, ' ');
+        p.column = -1;
+        while (++p.column < mapInfo->columnsX)
         {
-            (*mapCoordinates)[row][column].x = (float)column;
-            (*mapCoordinates)[row][column].y = (float)row;
-            (*mapCoordinates)[row][column].z = (float)ft_atoi(numbers[column]);
-            free(numbers[column]);
+            p.height = ft_atoi(p.numbers[p.column]);
+            ft_fillData(mapCoordinates, p, mapInfo);
+            free(p.numbers[p.column]);
         }
-        free(line);
-        free(numbers);
+        free(p.line);
+        free(p.numbers);
     }
+    mapInfo->heightRange = mapInfo->maxHeight - mapInfo->minHeight;
 }
 
 static t_pointCoordinates  ft_projectPoint(t_pointCoordinates originalPoint)
@@ -61,13 +69,13 @@ static void    ft_applyIsometricProjection(t_pointCoordinates ***mapCoordinates,
     }
 }
 
-void ft_getMapCoordinates(const char *mapFile, t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo)
+void ft_getMapCoordinates(const char *mapFile, t_pointCoordinates ***mapCoordinates, t_mapInfo *mapInfo)
 {
     int                 fd;
 
     fd = ft_openMapFile(mapFile);
     ft_downloadHeightMap(fd, mapCoordinates, mapInfo);
-    ft_applyIsometricProjection(mapCoordinates, mapInfo);
+    ft_applyIsometricProjection(mapCoordinates, *mapInfo);
     close(fd);
 }
 

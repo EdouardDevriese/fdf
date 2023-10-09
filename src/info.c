@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:37:49 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/07 11:48:29 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:14:26 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void    ft_getMapInfo(t_mapInfo *mapInfo, const char *mapFile)
     int         fd;
     int         ret;
 
+    mapInfo->minHeight = INT_MAX;
+    mapInfo->maxHeight = INT_MIN;
     mapInfo->columnsX = 0;
     mapInfo->rowsY = 0;
     fd = ft_openMapFile(mapFile);
