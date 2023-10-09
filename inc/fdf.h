@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 13:09:12 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/09 15:04:12 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:45:12 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,16 @@ typedef struct      s_displayParams
     float             translateY;
 }                   t_displayParams;
 
-typedef struct      s_imgData
+typedef struct      s_mlxData
 {
+    void            *mlxPtr;
+    void            *winPtr;
     void            *img;
     char            *addr;
     int             bitsPerPixel;
     int             lineLength;
     int             endian;
-}                   t_imgData;
+}                   t_mlxData;
 
 typedef struct      s_bresenhamParams
 {
@@ -102,7 +104,7 @@ typedef struct      s_color
 
 //UTILS//
 int     ft_openMapFile(const char *mapFile);
-void    ft_mlxPixelPut(t_imgData *imgData, int x, int y, int color);
+void    ft_mlxPixelPut(t_mlxData *mlx, int x, int y, int color);
 
 //INFO//
 void    ft_getMapInfo(t_mapInfo *mapInfo, const char *mapFile);
@@ -118,6 +120,6 @@ void    ft_getDisplayParams(t_displayParams *displayParams, t_pointCoordinates *
 void    ft_applyDisplayParams(t_displayParams displayParams, t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo);
 
 //DISPLAY//
-void    ft_drawMap(t_pointCoordinates **mapCoordinates, t_mapInfo mapInfo, t_imgData *img);
+void    ft_drawMap(t_pointCoordinates **mapCoordinates, t_mapInfo mapInfo, t_mlxData *mlx);
 
 #endif

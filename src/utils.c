@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 12:15:01 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/07 13:50:35 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:06:29 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ int     ft_openMapFile(const char *mapFile)
     return (fd);
 }
 
-void    ft_mlxPixelPut(t_imgData *img, int x, int y, int color)
+void    ft_mlxPixelPut(t_mlxData *mlx, int x, int y, int color)
 {
     char            *dst;
 
-    dst = img->addr + (y * img->lineLength + x * (img->bitsPerPixel / 8));
+    dst = mlx->addr + (y * mlx->lineLength + x * (mlx->bitsPerPixel / 8));
     *(unsigned int *)dst = color;
 }
 

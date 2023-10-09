@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 12:38:34 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/09 15:11:02 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:06:29 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void ft_initBresenhamParams(t_bresenhamParams *p, t_pointCoordinates poin
     p->colorStart = ft_calculateColor(pointA.z, mapInfo);
     p->colorEnd = ft_calculateColor(pointB.z, mapInfo);
 }
-static void ft_drawLine(t_pointCoordinates pointA, t_pointCoordinates pointB, t_imgData *img, t_mapInfo mapInfo)
+static void ft_drawLine(t_pointCoordinates pointA, t_pointCoordinates pointB, t_mlxData *mlx, t_mapInfo mapInfo)
 {
     t_bresenhamParams   p;
     float               t;
@@ -67,7 +67,7 @@ static void ft_drawLine(t_pointCoordinates pointA, t_pointCoordinates pointB, t_
     {
         t = sqrt(pow(p.x - pointA.x, 2) + pow(p.y - pointA.y, 2)) / sqrt(pow(pointB.x - pointA.x, 2) + pow(pointB.y - pointA.y, 2));
         color = ft_interpolateColor(p.colorStart, p.colorEnd, t);
-        ft_mlxPixelPut(img, p.x, p.y, color);
+        ft_mlxPixelPut(mlx, p.x, p.y, color);
         if (p.x == (int)pointB.x && p.y == (int)pointB.y)
             break;
         p.e2 = 2 * p.err;
@@ -84,7 +84,7 @@ static void ft_drawLine(t_pointCoordinates pointA, t_pointCoordinates pointB, t_
     }
 }
 
-void    ft_drawMap(t_pointCoordinates **mapCoordinates, t_mapInfo mapInfo, t_imgData *img)
+void    ft_drawMap(t_pointCoordinates **mapCoordinates, t_mapInfo mapInfo, t_mlxData *mlx)
 {
     int         row;
     int         column;
@@ -96,9 +96,9 @@ void    ft_drawMap(t_pointCoordinates **mapCoordinates, t_mapInfo mapInfo, t_img
         while (++column < mapInfo.columnsX)
         {
             if (row + 1 < mapInfo.rowsY)
-                ft_drawLine(mapCoordinates[row][column], mapCoordinates[row + 1][column], img, mapInfo);
+                ft_drawLine(mapCoordinates[row][column], mapCoordinates[row + 1][column], mlx, mapInfo);
             if (column + 1 < mapInfo.columnsX)
-                ft_drawLine(mapCoordinates[row][column], mapCoordinates[row][column + 1], img, mapInfo);
+                ft_drawLine(mapCoordinates[row][column], mapCoordinates[row][column + 1], mlx, mapInfo);
         }
     }
 }
