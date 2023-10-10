@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:40:05 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/10 14:55:10 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:06:39 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,12 @@ void	ft_apply_isometric_projection(t_point_coordinates ***map_coordinates,
 	}
 }
 
-int	ft_get_map_coordinates(const char *map_file,
-							t_point_coordinates ***map_coordinates,
+int	ft_get_map_coordinates(t_point_coordinates ***map_coordinates,
 							t_map_info *map_info)
 {
 	int	fd;
 
-	fd = open(map_file, O_RDONLY);
+	fd = open(map_info->file, O_RDONLY);
 	if (fd == 1)
 		return (write(1, "System error\n", 13));
 	if (ft_download_heightmap(fd, map_coordinates, map_info) != 0)

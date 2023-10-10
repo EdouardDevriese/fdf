@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:37:49 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/10 09:56:42 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:44:02 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,22 @@ int	ft_free_map(t_point_coordinates ***map_coordinates, t_map_info map_info)
 	return (1);
 }
 
-void	ft_initialize_map_info(t_map_info *map_info)
+void	ft_initialize_map_info(t_map_info *map_info, const char *file)
 {
 	map_info->min_height = INT_MAX;
 	map_info->max_height = INT_MIN;
 	map_info->columns = 0;
 	map_info->rows = 0;
+	map_info->file = file;
 }
 
-int	ft_get_map_info(t_map_info *map_info, const char *map_file)
+int	ft_get_map_info(t_map_info *map_info)
 {
 	char	*line;
 	int		fd;
 	int		ret;
 
-	fd = open(map_file, O_RDONLY);
+	fd = open(map_info->file, O_RDONLY);
 	if (fd == -1)
 		return (write(1, "System error\n", 13));
 	ret = get_next_line(fd, &line);

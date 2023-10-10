@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 12:38:34 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/10 10:21:40 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:15:27 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,25 @@ static int	ft_calculate_color(float height, t_map_info map_info)
 {
 	float	t;
 
-	t = (height - map_info.min_height) / map_info.height_range;
-	return (ft_interpolate_color(ORANGE, PURPLE, t));
+	if (ft_strncmp(map_info.file, "test_maps/Japan.fdf", 18) == 0
+		|| ft_strncmp(map_info.file, "test_maps/France.fdf", 19) == 0)
+	{
+		if (height < -100)
+			return (DEEPSEA);
+		if (height < 0)
+			return (SEA);
+		if (height < 5)
+			return (SAND);
+		if (height < 35)
+			return (GRASS);
+		else
+			return (SNOW);
+	}
+	else
+	{
+		t = (height - map_info.min_height) / map_info.height_range;
+		return (ft_interpolate_color(ORANGE, PURPLE, t));
+	}
 }
 
 static void	ft_initialize_bresenham_params(t_bresenham_params *p,

@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:26:10 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/10 10:26:14 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:44:58 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,18 @@ static void	ft_display_map(t_point_coordinates **map_coordinates,
 	mlx_loop(mlx.mlx_ptr);
 }
 
-static int	ft_create_map(const char *mapFile)
+static int	ft_create_map(const char *file)
 {
 	t_map_info			map_info;
 	t_point_coordinates	**map_coordinates;
 	t_display_params	display_params;
 
-	ft_initialize_map_info(&map_info);
-	if (ft_get_map_info(&map_info, mapFile) != 0)
+	ft_initialize_map_info(&map_info, file);
+	if (ft_get_map_info(&map_info) != 0)
 		return (1);
 	if (ft_initialize_map(&map_coordinates, map_info) != 0)
 		return (ft_free_map(&map_coordinates, map_info));
-	if (ft_get_map_coordinates(mapFile, &map_coordinates, &map_info) != 0)
+	if (ft_get_map_coordinates(&map_coordinates, &map_info) != 0)
 		return (ft_free_map(&map_coordinates, map_info));
 	ft_get_display_params(&display_params, map_coordinates, map_info);
 	ft_apply_display_params(display_params, &map_coordinates, map_info);
