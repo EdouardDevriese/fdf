@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:40:57 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/07 15:46:06 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/10 09:05:53 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,6 @@ static void    ft_getMinMaxValues(t_displayParams *displayParams, t_pointCoordin
     }
 }   
 
-void    ft_getDisplayParams(t_displayParams *displayParams, t_pointCoordinates **mapCoordinates, t_mapInfo mapInfo)
-{
-    ft_getMinMaxValues(displayParams, mapCoordinates, mapInfo);
-    displayParams->scaleFactorX = WINDOW_WIDTH / (displayParams->maxX - displayParams->minX);
-    displayParams->scaleFactorY = WINDOW_HEIGHT / (displayParams->maxY - displayParams->minY);
-    displayParams->translateX = -(displayParams->minX) * displayParams->scaleFactorX;
-    displayParams->translateY = -(displayParams->minY) * displayParams->scaleFactorY;
-}
-
 void    ft_applyDisplayParams(t_displayParams displayParams, t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo) 
 {
     int                 row;
@@ -65,3 +56,11 @@ void    ft_applyDisplayParams(t_displayParams displayParams, t_pointCoordinates 
     }
 }
 
+void    ft_getDisplayParams(t_displayParams *displayParams, t_pointCoordinates **mapCoordinates, t_mapInfo mapInfo)
+{
+    ft_getMinMaxValues(displayParams, mapCoordinates, mapInfo);
+    displayParams->scaleFactorX = WINDOW_WIDTH / (displayParams->maxX - displayParams->minX);
+    displayParams->scaleFactorY = WINDOW_HEIGHT / (displayParams->maxY - displayParams->minY);
+    displayParams->translateX = -(displayParams->minX) * displayParams->scaleFactorX;
+    displayParams->translateY = -(displayParams->minY) * displayParams->scaleFactorY;
+}

@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:40:05 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/09 15:18:58 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/10 09:09:37 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,18 @@ static void ft_fillData(t_pointCoordinates ***mapCoordinates, t_parsingUtils p, 
         mapInfo->maxHeight = p.height;
 }
 
-static void ft_downloadHeightMap(int fd, t_pointCoordinates ***mapCoordinates, t_mapInfo *mapInfo)
+static int  ft_downloadHeightMap(int fd, t_pointCoordinates ***mapCoordinates, t_mapInfo *mapInfo)
 {
     t_parsingUtils      p;
 
     p.row = -1;
     while (++p.row < mapInfo->rowsY)
     {
-        get_next_line(fd, &p.line);
+        if (get_next_line(fd, &p.line) == -1)
+            return (write(1, "System error\n", 13));
         p.numbers = ft_split(p.line, ' ');
+        if (!p.numbers)
+            return (write(1, "System error\n", 13));
         p.column = -1;
         while (++p.column < mapInfo->columnsX)
         {
@@ -43,6 +46,7 @@ static void ft_downloadHeightMap(int fd, t_pointCoordinates ***mapCoordinates, t
         free(p.numbers);
     }
     mapInfo->heightRange = mapInfo->maxHeight - mapInfo->minHeight;
+    return (0);
 }
 
 static t_pointCoordinates  ft_projectPoint(t_pointCoordinates originalPoint)
@@ -69,13 +73,17 @@ static void    ft_applyIsometricProjection(t_pointCoordinates ***mapCoordinates,
     }
 }
 
-void ft_getMapCoordinates(const char *mapFile, t_pointCoordinates ***mapCoordinates, t_mapInfo *mapInfo)
+int ft_getMapCoordinates(const char *mapFile, t_pointCoordinates ***mapCoordinates, t_mapInfo *mapInfo)
 {
     int                 fd;
 
-    fd = ft_openMapFile(mapFile);
-    ft_downloadHeightMap(fd, mapCoordinates, mapInfo);
+    fd = open(mapFile, O_RDONLY);
+    if (fd == 1)
+        return (write(1, "System error\n", 13));
+    if (ft_downloadHeightMap(fd, mapCoordinates, mapInfo) != 0)
+        return (1);
     ft_applyIsometricProjection(mapCoordinates, *mapInfo);
     close(fd);
+    return (0);
 }
 

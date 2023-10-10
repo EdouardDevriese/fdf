@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 13:09:12 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/09 17:45:12 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/10 09:08:17 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,13 @@ int     ft_openMapFile(const char *mapFile);
 void    ft_mlxPixelPut(t_mlxData *mlx, int x, int y, int color);
 
 //INFO//
-void    ft_getMapInfo(t_mapInfo *mapInfo, const char *mapFile);
-void    ft_initializeMap(t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo);
-void    ft_freeMap(t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo);
+int     ft_getMapInfo(t_mapInfo *mapInfo, const char *mapFile);
+void    ft_initializeMapInfo(t_mapInfo *mapInfo);
+int     ft_initializeMap(t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo);
+int     ft_freeMap(t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo);
 
 //COORDINATES//
-void    ft_getMapCoordinates(const char *mapFile, t_pointCoordinates ***mapCoordinates, t_mapInfo *mapInfo);
-void    ft_initializeMap(t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo);
+int     ft_getMapCoordinates(const char *mapFile, t_pointCoordinates ***mapCoordinates, t_mapInfo *mapInfo);
 
 //DISPLAYPARAMS//
 void    ft_getDisplayParams(t_displayParams *displayParams, t_pointCoordinates **mapCoordinates, t_mapInfo mapInfo);

@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 13:35:54 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/09 17:44:54 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/10 09:08:38 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,23 @@ static void ft_displayMap(t_pointCoordinates **mapCoordinates, t_mapInfo mapInfo
     mlx_loop(mlx.mlxPtr);
 }
 
-static void ft_createMap(const char *mapFile)
+static int ft_createMap(const char *mapFile)
 {
     t_mapInfo           mapInfo;
     t_pointCoordinates  **mapCoordinates;
     t_displayParams     displayParams;
 
-    ft_getMapInfo(&mapInfo, mapFile);
-    ft_initializeMap(&mapCoordinates, mapInfo);
-    ft_getMapCoordinates(mapFile, &mapCoordinates, &mapInfo);
+    ft_initializeMapInfo(&mapInfo);
+    if (ft_getMapInfo(&mapInfo, mapFile) != 0)
+        return (1);
+    if (ft_initializeMap(&mapCoordinates, mapInfo) != 0)
+        return (ft_freeMap(&mapCoordinates, mapInfo));
+    if (ft_getMapCoordinates(mapFile, &mapCoordinates, &mapInfo) != 0)
+        return (ft_freeMap(&mapCoordinates, mapInfo));
     ft_getDisplayParams(&displayParams, mapCoordinates, mapInfo);
     ft_applyDisplayParams(displayParams, &mapCoordinates, mapInfo);
     ft_displayMap(mapCoordinates, mapInfo);
+    return (0);
 }
 
 int     main(int argc, char **argv)
