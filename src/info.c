@@ -6,72 +6,75 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:37:49 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/10 09:08:58 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/10 09:56:42 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int      ft_initializeMap(t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo)
+int	ft_initialize_map(t_point_coordinates ***map_coordinates,
+						t_map_info map_info)
 {
-    int                 i;
+	int	i;
 
-    *mapCoordinates = (t_pointCoordinates **)malloc(mapInfo.rowsY * sizeof(t_pointCoordinates *));
-    if (!*mapCoordinates)
-        return (write(1, "System error\n", 13));
-    i = -1;
-    while (++i < mapInfo.rowsY)
-    {
-        (*mapCoordinates)[i] = (t_pointCoordinates *)malloc(mapInfo.columnsX * sizeof(t_pointCoordinates));
-        if (!(*mapCoordinates)[i])
-            return (write(1, "System error\n", 13));
-    }
-    return (0);
+	*map_coordinates = (t_point_coordinates **)malloc(map_info.rows
+			* sizeof(t_point_coordinates *));
+	if (!*map_coordinates)
+		return (write(1, "System error\n", 13));
+	i = -1;
+	while (++i < map_info.rows)
+	{
+		(*map_coordinates)[i] = (t_point_coordinates *)malloc(map_info.columns
+				* sizeof(t_point_coordinates));
+		if (!(*map_coordinates)[i])
+			return (write(1, "System error\n", 13));
+	}
+	return (0);
 }
 
-int     ft_freeMap(t_pointCoordinates ***mapCoordinates, t_mapInfo mapInfo)
+int	ft_free_map(t_point_coordinates ***map_coordinates, t_map_info map_info)
 {
-    int                 i;
+	int	i;
 
-    i = -1;
-    while (++i < mapInfo.rowsY)
-        if ((*mapCoordinates)[i])
-            free((*mapCoordinates)[i]);
-    if (*mapCoordinates)
-        free(*mapCoordinates);
-    return (1);
+	i = -1;
+	while (++i < map_info.rows)
+		if ((*map_coordinates)[i])
+			free((*map_coordinates)[i]);
+	if (*map_coordinates)
+		free(*map_coordinates);
+	return (1);
 }
 
-void    ft_initializeMapInfo(t_mapInfo *mapInfo)
+void	ft_initialize_map_info(t_map_info *map_info)
 {
-    mapInfo->minHeight = INT_MAX;
-    mapInfo->maxHeight = INT_MIN;
-    mapInfo->columnsX = 0;
-    mapInfo->rowsY = 0;
+	map_info->min_height = INT_MAX;
+	map_info->max_height = INT_MIN;
+	map_info->columns = 0;
+	map_info->rows = 0;
 }
 
-int     ft_getMapInfo(t_mapInfo *mapInfo, const char *mapFile)
+int	ft_get_map_info(t_map_info *map_info, const char *map_file)
 {
-    char        *line;
-    int         fd;
-    int         ret;
-    
-    fd = open(mapFile, O_RDONLY);
-    if (fd == -1)
-        return (write(1, "System error\n", 13));
-    ret = get_next_line(fd, &line);
-    if (ft_isdigit(line[ft_strlen(line) - 2]))
-        mapInfo->columnsX = (int)ft_word_count(line, ' ');
-    else
-        mapInfo->columnsX = (int)ft_word_count(line, ' ') - 1;
-    while (ret > 0)
-    {
-        mapInfo->rowsY += 1;
-        free(line);
-        ret = get_next_line(fd, &line);
-    }
-    if (ret == -1)
-        return (write(1, "System error\n", 13));
-    close(fd);
-    return (0);
+	char	*line;
+	int		fd;
+	int		ret;
+
+	fd = open(map_file, O_RDONLY);
+	if (fd == -1)
+		return (write(1, "System error\n", 13));
+	ret = get_next_line(fd, &line);
+	if (ft_isdigit(line[ft_strlen(line) - 2]))
+		map_info->columns = (int)ft_word_count(line, ' ');
+	else
+		map_info->columns = (int)ft_word_count(line, ' ') - 1;
+	while (ret > 0)
+	{
+		map_info->rows += 1;
+		free(line);
+		ret = get_next_line(fd, &line);
+	}
+	if (ret == -1)
+		return (write(1, "System error\n", 13));
+	close(fd);
+	return (0);
 }

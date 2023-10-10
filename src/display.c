@@ -6,101 +6,114 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 12:38:34 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/09 17:06:29 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/10 10:21:40 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int ft_interpolateColor(int colorStart, int colorEnd, float t)
+static int	ft_interpolate_color(int color_start, int color_end, float t)
 {
-    t_color             start;
-    t_color             end;
-    t_color             current;
+	t_color	start;
+	t_color	end;
+	t_color	current;
 
-    start.r = (colorStart >> 16) & 0xFF;
-    start.g = (colorStart >> 8) & 0xFF;
-    start.b = colorStart & 0xFF;
-    end.r = (colorEnd >> 16) & 0xFF;
-    end.g = (colorEnd >> 8) & 0xFF;
-    end.b = colorEnd & 0xFF;
-    current.r = (int)((1 - t) * start.r + t * end.r);
-    current.g = (int)((1 - t) * start.g + t * end.g);
-    current.b = (int)((1 - t) * start.b + t * end.b);
-    return ((current.r << 16) | (current.g << 8) | current.b);
+	start.r = (color_start >> 16) & 0xFF;
+	start.g = (color_start >> 8) & 0xFF;
+	start.b = color_start & 0xFF;
+	end.r = (color_end >> 16) & 0xFF;
+	end.g = (color_end >> 8) & 0xFF;
+	end.b = color_end & 0xFF;
+	current.r = (int)((1 - t) * start.r + t * end.r);
+	current.g = (int)((1 - t) * start.g + t * end.g);
+	current.b = (int)((1 - t) * start.b + t * end.b);
+	return ((current.r << 16) | (current.g << 8) | current.b);
 }
 
-static int ft_calculateColor(float height, t_mapInfo mapInfo)
+static int	ft_calculate_color(float height, t_map_info map_info)
 {
-    float               t;
+	float	t;
 
-    t = (height - mapInfo.minHeight) / mapInfo.heightRange;
-    return (ft_interpolateColor(ORANGE, PURPLE, t));
+	t = (height - map_info.min_height) / map_info.height_range;
+	return (ft_interpolate_color(ORANGE, PURPLE, t));
 }
 
-static void ft_initBresenhamParams(t_bresenhamParams *p, t_pointCoordinates pointA, t_pointCoordinates pointB, t_mapInfo mapInfo)
+static void	ft_initialize_bresenham_params(t_bresenham_params *p,
+											t_point_coordinates a,
+											t_point_coordinates b,
+											t_map_info map_info)
 {
-    p->dx = abs((int)pointB.x - (int)pointA.x);
-    p->dy = abs((int)pointB.y - (int)pointA.y);
-    if (pointA.x < pointB.x)
-        p->sx = 1;
-    else
-        p->sx = -1;
-    if (pointA.y < pointB.y)
-        p->sy = 1;
-    else
-        p->sy = -1;
-    p->err = p->dx - p->dy;
-    p->x = (int)pointA.x;
-    p->y = (int)pointA.y;
-    p->colorStart = ft_calculateColor(pointA.z, mapInfo);
-    p->colorEnd = ft_calculateColor(pointB.z, mapInfo);
-}
-static void ft_drawLine(t_pointCoordinates pointA, t_pointCoordinates pointB, t_mlxData *mlx, t_mapInfo mapInfo)
-{
-    t_bresenhamParams   p;
-    float               t;
-    int                 color;
-
-    ft_initBresenhamParams(&p, pointA, pointB, mapInfo);
-    while (1)
-    {
-        t = sqrt(pow(p.x - pointA.x, 2) + pow(p.y - pointA.y, 2)) / sqrt(pow(pointB.x - pointA.x, 2) + pow(pointB.y - pointA.y, 2));
-        color = ft_interpolateColor(p.colorStart, p.colorEnd, t);
-        ft_mlxPixelPut(mlx, p.x, p.y, color);
-        if (p.x == (int)pointB.x && p.y == (int)pointB.y)
-            break;
-        p.e2 = 2 * p.err;
-        if (p.e2 > -p.dy)
-        {
-            p.err -= p.dy;
-            p.x += p.sx;
-        }
-        if (p.e2 < p.dx)
-        {
-            p.err += p.dx;
-            p.y += p.sy;
-        }
-    }
+	p->dx = abs((int)b.x - (int)a.x);
+	p->dy = abs((int)b.y - (int)a.y);
+	if (a.x < b.x)
+		p->sx = 1;
+	else
+		p->sx = -1;
+	if (a.y < b.y)
+		p->sy = 1;
+	else
+		p->sy = -1;
+	p->err = p->dx - p->dy;
+	p->x = (int)a.x;
+	p->y = (int)a.y;
+	p->color_start = ft_calculate_color(a.z, map_info);
+	p->color_end = ft_calculate_color(b.z, map_info);
 }
 
-void    ft_drawMap(t_pointCoordinates **mapCoordinates, t_mapInfo mapInfo, t_mlxData *mlx)
+static void	ft_draw_line(t_point_coordinates a,
+							t_point_coordinates b,
+							t_mlx_data *mlx,
+							t_map_info map_info)
 {
-    int         row;
-    int         column;
+	t_bresenham_params	p;
+	float				t;
+	int					color;
 
-    row = -1;
-    while (++row < mapInfo.rowsY)
-    {
-        column = -1;
-        while (++column < mapInfo.columnsX)
-        {
-            if (row + 1 < mapInfo.rowsY)
-                ft_drawLine(mapCoordinates[row][column], mapCoordinates[row + 1][column], mlx, mapInfo);
-            if (column + 1 < mapInfo.columnsX)
-                ft_drawLine(mapCoordinates[row][column], mapCoordinates[row][column + 1], mlx, mapInfo);
-        }
-    }
+	ft_initialize_bresenham_params(&p, a, b, map_info);
+	while (1)
+	{
+		t = sqrt(pow(p.x - a.x, 2) + pow(p.y - a.y, 2)) / sqrt(pow(b.x - a.x, 2)
+				+ pow(b.y - a.y, 2));
+		color = ft_interpolate_color(p.color_start, p.color_end, t);
+		ft_mlx_pixel_put(mlx, p.x, p.y, color);
+		if (p.x == (int)b.x && p.y == (int)b.y)
+			break ;
+		p.e2 = 2 * p.err;
+		if (p.e2 > -p.dy)
+		{
+			p.err -= p.dy;
+			p.x += p.sx;
+		}
+		if (p.e2 < p.dx)
+		{
+			p.err += p.dx;
+			p.y += p.sy;
+		}
+	}
 }
 
+void	ft_draw_map(t_point_coordinates **map_coordinates, t_map_info map_info,
+		t_mlx_data *mlx)
+{
+	int	row;
+	int	column;
 
+	row = -1;
+	while (++row < map_info.rows)
+	{
+		column = -1;
+		while (++column < map_info.columns)
+		{
+			if (row + 1 < map_info.rows)
+				ft_draw_line(map_coordinates[row][column],
+					map_coordinates[row + 1][column],
+					mlx,
+					map_info);
+			if (column + 1 < map_info.columns)
+				ft_draw_line(map_coordinates[row][column],
+					map_coordinates[row][column + 1],
+					mlx,
+					map_info);
+		}
+	}
+}

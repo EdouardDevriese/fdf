@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:24:40 by wdevries          #+#    #+#             */
-/*   Updated: 2023/08/07 21:29:40 by warredevriese    ###   ########.fr       */
+/*   Updated: 2023/10/10 11:25:05 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,12 @@ int	get_next_line(int fd, char **line)
 	static char	*line_parse;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
-		return (0);
+		return (-1);
 	if (ft_read(fd, &line_parse) == -1)
 	{
 		free(line_parse);
 		line_parse = NULL;
-		return (0);
+		return (-1);
 	}
 	if (line_parse && *line_parse == 0)
 	{
