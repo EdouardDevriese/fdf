@@ -30,18 +30,18 @@ static int	ft_interpolate_color(int color_start, int color_end, float t)
 	return ((current.r << 16) | (current.g << 8) | current.b);
 }
 
-static int	ft_calculate_color(float height, t_map_info map_info)
+static int	ft_calculate_color(float height, t_map_info info)
 {
 	float	t;
 
-	t = (height - map_info.min_height) / map_info.height_range;
+	t = (height - info.min_height) / info.height_range;
 	return (ft_interpolate_color(ORANGE, PURPLE, t));
 }
 
 static void	ft_initialize_bresenham_params(t_bresenham_params *p,
 											t_point_coordinates a,
 											t_point_coordinates b,
-											t_map_info map_info)
+											t_map_info info)
 {
 	p->dx = abs((int)b.x - (int)a.x);
 	p->dy = abs((int)b.y - (int)a.y);
@@ -56,20 +56,20 @@ static void	ft_initialize_bresenham_params(t_bresenham_params *p,
 	p->err = p->dx - p->dy;
 	p->x = (int)a.x;
 	p->y = (int)a.y;
-	p->color_start = ft_calculate_color(a.z, map_info);
-	p->color_end = ft_calculate_color(b.z, map_info);
+	p->color_start = ft_calculate_color(a.z, info);
+	p->color_end = ft_calculate_color(b.z, info);
 }
 
 static void	ft_draw_line(t_point_coordinates a,
 							t_point_coordinates b,
 							t_mlx_data *mlx,
-							t_map_info map_info)
+							t_map_info info)
 {
 	t_bresenham_params	p;
 	float				t;
 	int					color;
 
-	ft_initialize_bresenham_params(&p, a, b, map_info);
+	ft_initialize_bresenham_params(&p, a, b, info);
 	while (1)
 	{
 		t = sqrt(pow(p.x - a.x, 2) + pow(p.y - a.y, 2)) / sqrt(pow(b.x - a.x, 2)
@@ -92,28 +92,28 @@ static void	ft_draw_line(t_point_coordinates a,
 	}
 }
 
-void	ft_draw_map(t_point_coordinates **map_coordinates, t_map_info map_info,
+void	ft_draw_map(t_point_coordinates **map, t_map_info info,
 		t_mlx_data *mlx)
 {
 	int	row;
 	int	column;
 
 	row = -1;
-	while (++row < map_info.rows)
+	while (++row < info.rows)
 	{
 		column = -1;
-		while (++column < map_info.columns)
+		while (++column < info.columns)
 		{
-			if (row + 1 < map_info.rows)
-				ft_draw_line(map_coordinates[row][column],
-					map_coordinates[row + 1][column],
+			if (row + 1 < info.rows)
+				ft_draw_line(map[row][column],
+					map[row + 1][column],
 					mlx,
-					map_info);
-			if (column + 1 < map_info.columns)
-				ft_draw_line(map_coordinates[row][column],
-					map_coordinates[row][column + 1],
+					info);
+			if (column + 1 < info.columns)
+				ft_draw_line(map[row][column],
+					map[row][column + 1],
 					mlx,
-					map_info);
+					info);
 		}
 	}
 }

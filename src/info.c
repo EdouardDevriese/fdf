@@ -12,48 +12,48 @@
 
 #include "fdf.h"
 
-int	ft_initialize_map(t_point_coordinates ***map_coordinates,
-						t_map_info map_info)
+int	ft_initialize_map(t_point_coordinates ***map,
+						t_map_info info)
 {
 	int	i;
 
-	*map_coordinates = (t_point_coordinates **)malloc(map_info.rows
+	*map = (t_point_coordinates **)malloc(info.rows
 			* sizeof(t_point_coordinates *));
-	if (!*map_coordinates)
+	if (!*map)
 		return (write(1, "System error\n", 13));
 	i = -1;
-	while (++i < map_info.rows)
+	while (++i < info.rows)
 	{
-		(*map_coordinates)[i] = (t_point_coordinates *)malloc(map_info.columns
+		(*map)[i] = (t_point_coordinates *)malloc(info.columns
 				* sizeof(t_point_coordinates));
-		if (!(*map_coordinates)[i])
+		if (!(*map)[i])
 			return (write(1, "System error\n", 13));
 	}
 	return (0);
 }
 
-int	ft_free_map(t_point_coordinates ***map_coordinates, t_map_info map_info)
+int	ft_free_map(t_point_coordinates ***map, t_map_info info)
 {
 	int	i;
 
 	i = -1;
-	while (++i < map_info.rows)
-		if ((*map_coordinates)[i])
-			free((*map_coordinates)[i]);
-	if (*map_coordinates)
-		free(*map_coordinates);
+	while (++i < info.rows)
+		if ((*map)[i])
+			free((*map)[i]);
+	if (*map)
+		free(*map);
 	return (1);
 }
 
-void	ft_initialize_map_info(t_map_info *map_info)
+void	ft_initialize_map_info(t_map_info *info)
 {
-	map_info->min_height = INT_MAX;
-	map_info->max_height = INT_MIN;
-	map_info->columns = 0;
-	map_info->rows = 0;
+	info->min_height = INT_MAX;
+	info->max_height = INT_MIN;
+	info->columns = 0;
+	info->rows = 0;
 }
 
-int	ft_get_map_info(t_map_info *map_info, const char *map_file)
+int	ft_get_map_info(t_map_info *info, const char *map_file)
 {
 	char	*line;
 	int		fd;
@@ -64,12 +64,12 @@ int	ft_get_map_info(t_map_info *map_info, const char *map_file)
 		return (write(1, "System error\n", 13));
 	ret = get_next_line(fd, &line);
 	if (ft_isdigit(line[ft_strlen(line) - 2]))
-		map_info->columns = (int)ft_word_count(line, ' ');
+		info->columns = (int)ft_word_count(line, ' ');
 	else
-		map_info->columns = (int)ft_word_count(line, ' ') - 1;
+		info->columns = (int)ft_word_count(line, ' ') - 1;
 	while (ret > 0)
 	{
-		map_info->rows += 1;
+		info->rows += 1;
 		free(line);
 		ret = get_next_line(fd, &line);
 	}
