@@ -66,13 +66,26 @@ void	ft_get_display_params(t_display_params *dp,
 							t_point_coordinates **map,
 							t_map_info info)
 {
+    float range_x;
+    float range_y;
+
 	ft_get_min_max_values(dp, map, info);
-	dp->scale_factor_x = WINDOW_WIDTH / (dp->max_x
-			- dp->min_x);
-	dp->scale_factor_y = WINDOW_HEIGHT / (dp->max_y
-			- dp->min_y);
-	dp->translate_x = -(dp->min_x)
-		* dp->scale_factor_x;
-	dp->translate_y = -(dp->min_y)
-		* dp->scale_factor_y;
+    range_x = dp->max_x - dp->min_x;
+    range_y = dp->max_y - dp->min_y;
+    if (range_x / range_y > WINDOW_WIDTH / WINDOW_HEIGHT)
+        dp->scale_factor = WINDOW_WIDTH / range_x;
+    else
+        dp->scale_factor = WINDOW_HEIGHT / range_y;
+    dp->translate_x = WINDOW_WIDTH / 2 - (dp->min_x + range_x / 2.0) * dp->scale_factor;
+	dp->translate_y = WINDOW_HEIGHT / 2 - (dp->min_y + range_y / 2.0) * dp->scale_factor;
+
+/* 	ft_get_min_max_values(dp, map, info); */
+/* 	dp->scale_factor_x = WINDOW_WIDTH / (dp->max_x */
+/* 			- dp->min_x); */
+/* 	dp->scale_factor_y = WINDOW_HEIGHT / (dp->max_y */
+/* 			- dp->min_y); */
+/* 	dp->translate_x = -(dp->min_x) */
+/* 		* dp->scale_factor_x; */
+/* 	dp->translate_y = -(dp->min_y) */
+/* 		* dp->scale_factor_y; */
 }
