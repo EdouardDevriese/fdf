@@ -72,7 +72,7 @@ void	ft_get_display_params(t_display_params *dp,
 	ft_get_min_max_values(dp, map, info);
     range_x = dp->max_x - dp->min_x;
     range_y = dp->max_y - dp->min_y;
-    if (range_x / range_y > WINDOW_WIDTH / WINDOW_HEIGHT)
+    if (range_x / range_y > (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT)
         dp->scale_factor = WINDOW_WIDTH / range_x;
     else
         dp->scale_factor = WINDOW_HEIGHT / range_y;
