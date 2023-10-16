@@ -12,67 +12,80 @@
 
 #include "fdf.h"
 
-static void	ft_get_min_max_values(t_display_params *display_params,
-									t_point_coordinates **map_coordinates,
-									t_map_info map_info)
+static void	ft_get_min_max_values(t_display_params *dp,
+									t_point_coordinates **map,
+									t_map_info info)
 {
 	int	row;
 	int	col;
 
-	display_params->min_x = (float)INT_MAX;
-	display_params->max_x = (float)INT_MIN;
-	display_params->min_y = (float)INT_MAX;
-	display_params->max_y = (float)INT_MIN;
+	dp->min_x = (float)INT_MAX;
+	dp->max_x = (float)INT_MIN;
+	dp->min_y = (float)INT_MAX;
+	dp->max_y = (float)INT_MIN;
 	row = -1;
-	while (++row < map_info.rows)
+	while (++row < info.rows)
 	{
 		col = -1;
-		while (++col < map_info.columns)
+ 	while (++col < info.columns)
 		{
-			if (map_coordinates[row][col].x < display_params->min_x)
-				display_params->min_x = map_coordinates[row][col].x;
-			if (map_coordinates[row][col].x > display_params->max_x)
-				display_params->max_x = map_coordinates[row][col].x;
-			if (map_coordinates[row][col].y < display_params->min_y)
-				display_params->min_y = map_coordinates[row][col].y;
-			if (map_coordinates[row][col].y > display_params->max_y)
-				display_params->max_y = map_coordinates[row][col].y;
+			if (map[row][col].x < dp->min_x)
+				dp->min_x = map[row][col].x;
+			if (map[row][col].x > dp->max_x)
+				dp->max_x = map[row][col].x;
+			if (map[row][col].y < dp->min_y)
+				dp->min_y = map[row][col].y;
+			if (map[row][col].y > dp->max_y)
+				dp->max_y = map[row][col].y;
 		}
 	}
 }
 
-void	ft_apply_display_params(t_display_params display_params,
-								t_point_coordinates ***map_coordinates,
-								t_map_info map_info)
+void	ft_apply_display_params(t_display_params dp,
+								t_point_coordinates ***map,
+								t_map_info info)
 {
 	int	row;
 	int	col;
 
 	row = -1;
-	while (++row < map_info.rows)
+	while (++row < info.rows)
 	{
 		col = -1;
-		while (++col < map_info.columns)
+		while (++col < info.columns)
 		{
-			(*map_coordinates)[row][col].x = (*map_coordinates)[row][col].x
-				* display_params.scale_factor_x + display_params.translate_x;
-			(*map_coordinates)[row][col].y = (*map_coordinates)[row][col].y
-				* display_params.scale_factor_y + display_params.translate_y;
+			(*map)[row][col].x = (*map)[row][col].x
+				* dp.scale_factor_x + dp.translate_x;
+			(*map)[row][col].y = (*map)[row][col].y
+				* dp.scale_factor_y + dp.translate_y;
 		}
 	}
 }
 
-void	ft_get_display_params(t_display_params *display_params,
-							t_point_coordinates **map_coordinates,
-							t_map_info map_info)
+void	ft_get_display_params(t_display_params *dp,
+							t_point_coordinates **map,
+							t_map_info info)
 {
-	ft_get_min_max_values(display_params, map_coordinates, map_info);
-	display_params->scale_factor_x = WINDOW_WIDTH / (display_params->max_x
-			- display_params->min_x);
-	display_params->scale_factor_y = WINDOW_HEIGHT / (display_params->max_y
-			- display_params->min_y);
-	display_params->translate_x = -(display_params->min_x)
-		* display_params->scale_factor_x;
-	display_params->translate_y = -(display_params->min_y)
-		* display_params->scale_factor_y;
+    float range_x;
+    float range_y;
+
+	ft_get_min_max_values(dp, map, info);
+    range_x = dp->max_x - dp->min_x;
+    range_y = dp->max_y - dp->min_y;
+    if (range_x / range_y > WINDOW_WIDTH / WINDOW_HEIGHT)
+        dp->scale_factor = WINDOW_WIDTH / range_x;
+    else
+        dp->scale_factor = WINDOW_HEIGHT / range_y;
+    dp->translate_x = WINDOW_WIDTH / 2 - (dp->min_x + range_x / 2.0) * dp->scale_factor;
+	dp->translate_y = WINDOW_HEIGHT / 2 - (dp->min_y + range_y / 2.0) * dp->scale_factor;
+
+/* 	ft_get_min_max_values(dp, map, info); */
+/* 	dp->scale_factor_x = WINDOW_WIDTH / (dp->max_x */
+/* 			- dp->min_x); */
+/* 	dp->scale_factor_y = WINDOW_HEIGHT / (dp->max_y */
+/* 			- dp->min_y); */
+/* 	dp->translate_x = -(dp->min_x) */
+/* 		* dp->scale_factor_x; */
+/* 	dp->translate_y = -(dp->min_y) */
+/* 		* dp->scale_factor_y; */
 }

@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:26:10 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/10 15:44:58 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/16 12:04:17 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	ft_escape(int keycode, t_mlx_data *mlx)
 	return (0);
 }
 
-static void	ft_display_map(t_point_coordinates **map_coordinates,
-							t_map_info map_info)
+static void	ft_display_map(t_point_coordinates **map,
+							t_map_info info)
 {
 	t_mlx_data	mlx;
 
@@ -39,30 +39,30 @@ static void	ft_display_map(t_point_coordinates **map_coordinates,
 	mlx.img = mlx_new_image(mlx.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
 	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bits_per_pixel, &mlx.line_length,
 			&mlx.endian);
-	ft_draw_map(map_coordinates, map_info, &mlx);
+	ft_draw_map(map, info, &mlx);
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win_ptr, mlx.img, 0, 0);
 	mlx_hook(mlx.win_ptr, 17, 0L, ft_close_window, &mlx);
 	mlx_key_hook(mlx.win_ptr, ft_escape, &mlx);
-	ft_free_map(&map_coordinates, map_info);
+	ft_free_map(&map, info);
 	mlx_loop(mlx.mlx_ptr);
 }
 
 static int	ft_create_map(const char *file)
 {
-	t_map_info			map_info;
-	t_point_coordinates	**map_coordinates;
+	t_map_info			info;
+	t_point_coordinates	**map;
 	t_display_params	display_params;
 
-	ft_initialize_map_info(&map_info, file);
-	if (ft_get_map_info(&map_info) != 0)
+	ft_initialize_map_info(&info);
+	if (ft_get_map_info(&info, mapFile) != 0)
 		return (1);
-	if (ft_initialize_map(&map_coordinates, map_info) != 0)
-		return (ft_free_map(&map_coordinates, map_info));
-	if (ft_get_map_coordinates(&map_coordinates, &map_info) != 0)
-		return (ft_free_map(&map_coordinates, map_info));
-	ft_get_display_params(&display_params, map_coordinates, map_info);
-	ft_apply_display_params(display_params, &map_coordinates, map_info);
-	ft_display_map(map_coordinates, map_info);
+	if (ft_initialize_map(&map, info) != 0)
+		return (ft_free_map(&map, info));
+	if (ft_get_map_coordinates(mapFile, &map, &info) != 0)
+		return (ft_free_map(&map, info));
+	ft_get_display_params(&display_params, map, info);
+	ft_apply_display_params(display_params, &map, info);
+	ft_display_map(map, info);
 	return (0);
 }
 
