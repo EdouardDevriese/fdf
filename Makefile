@@ -11,13 +11,12 @@ NAME = fdf
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -03
-
+CFLAGS = -Wall -Wextra -Werror
 MLX_DIR = minilibx-linux/
 MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
 
 SRC_DIR = ./src/
-SRC_FILES = main.c info.c coordinates.c displayparams.c utils.c display.c
+SRC_FILES = main.c color.c info.c coordinates.c displayparams.c utils.c display.c
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
 OBJ_DIR = ./obj/

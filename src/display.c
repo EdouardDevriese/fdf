@@ -6,56 +6,12 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 12:38:34 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/16 12:09:59 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:39:22 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int	ft_interpolate_color(int color_start, int color_end, float t)
-{
-	t_color	start;
-	t_color	end;
-	t_color	current;
-
-	start.r = (color_start >> 16) & 0xFF;
-	start.g = (color_start >> 8) & 0xFF;
-	start.b = color_start & 0xFF;
-	end.r = (color_end >> 16) & 0xFF;
-	end.g = (color_end >> 8) & 0xFF;
-	end.b = color_end & 0xFF;
-	current.r = (int)((1 - t) * start.r + t * end.r);
-	current.g = (int)((1 - t) * start.g + t * end.g);
-	current.b = (int)((1 - t) * start.b + t * end.b);
-	return ((current.r << 16) | (current.g << 8) | current.b);
-}
-
-static int	ft_calculate_color(float height, t_map_info info)
-{
-	float	t;
-
-	if (ft_strncmp(map_info.file, "test_maps/Japan.fdf", 18) == 0
-		|| ft_strncmp(map_info.file, "test_maps/France.fdf", 19) == 0)
-	{
-		if (height < -100)
-			return (DEEPSEA);
-		if (height < 0)
-			return (SEA);
-		if (height < 5)
-			return (SAND);
-		if (height < 35)
-			return (GRASS);
-		else
-			return (SNOW);
-	}
-	else
-	{
-		if (info.min_height == 0)
-			return (PURPLE);
-		t = (height - info.min_height) / info.height_range;
-		return (ft_interpolate_color(ORANGE, PURPLE, t));
-	}
-}
 
 static void	ft_initialize_bresenham_params(t_bresenham_params *p,
 											t_point_coordinates a,

@@ -1,3 +1,5 @@
+
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,7 +8,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 13:09:12 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/10 16:17:36 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:34:13 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +17,8 @@
 # define FDF_H
 # define WINDOW_HEIGHT 1440
 # define WINDOW_WIDTH 2560
+# define LANDSCAPE 1
+# define GRADIENT 2
 # define ORANGE 0x00FF8000
 # define PURPLE 0x00800080
 # define RANGE 0x00FFFFBF
@@ -43,6 +47,7 @@ typedef struct s_map_info
 	int			max_height;
 	int			height_range;
 	const char	*file;
+	int			colorscheme;
 }				t_map_info;
 
 typedef struct s_point_coordinates
@@ -68,8 +73,7 @@ typedef struct s_display_params
 	float		max_x;
 	float		min_y;
 	float		max_y;
-	float		scale_factor_x;
-	float		scale_factor_y;
+	float		scale_factor;
 	float		translate_x;
 	float		translate_y;
 }				t_display_params;
@@ -136,5 +140,9 @@ void			ft_apply_display_params(t_display_params display_params,
 void			ft_draw_map(t_point_coordinates **map_coordinates,
 					t_map_info map_info,
 					t_mlx_data *mlx);
+
+//COLOR//
+int				ft_interpolate_color(int color_start, int color_end, float t);
+int				ft_calculate_color(float height, t_map_info info);
 
 #endif

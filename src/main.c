@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:26:10 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/16 12:04:17 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:22:30 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ static int	ft_create_map(const char *file)
 	t_point_coordinates	**map;
 	t_display_params	display_params;
 
-	ft_initialize_map_info(&info);
-	if (ft_get_map_info(&info, mapFile) != 0)
+	ft_initialize_map_info(&info, file);
+	if (ft_get_map_info(&info) != 0)
 		return (1);
 	if (ft_initialize_map(&map, info) != 0)
 		return (ft_free_map(&map, info));
-	if (ft_get_map_coordinates(mapFile, &map, &info) != 0)
+	if (ft_get_map_coordinates(&map, &info) != 0)
 		return (ft_free_map(&map, info));
 	ft_get_display_params(&display_params, map, info);
 	ft_apply_display_params(display_params, &map, info);

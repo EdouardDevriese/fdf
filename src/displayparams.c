@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:40:57 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/10 10:23:54 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:26:55 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ void	ft_apply_display_params(t_display_params dp,
 		while (++col < info.columns)
 		{
 			(*map)[row][col].x = (*map)[row][col].x
-				* dp.scale_factor_x + dp.translate_x;
+				* dp.scale_factor + dp.translate_x;
 			(*map)[row][col].y = (*map)[row][col].y
-				* dp.scale_factor_y + dp.translate_y;
+				* dp.scale_factor + dp.translate_y;
 		}
 	}
 }
