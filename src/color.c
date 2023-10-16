@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 13:32:36 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/16 13:41:11 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/16 15:58:32 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,29 +30,45 @@ int	ft_interpolate_color(int color_start, int color_end, float t)
 	return ((current.r << 16) | (current.g << 8) | current.b);
 }
 
-int	ft_calculate_color(float height, t_map_info info)
+static int	ft_landscape(float height)
+{
+	if (height > 100)
+		return (0xE0DED8);
+	if (height > 70)
+		return (0xAC9A7C);
+	if (height > 50)
+		return (0XB9985A);
+	if (height > 30)
+		return (0xDED6A3);
+	if (height > 10)
+		return (0xD1D7AB);
+	if (height > 0)
+		return (0xACD0A5);
+	if (height > -5)
+		return (0xD8F2FE);
+	if (height > -15)
+		return (0xACDBFB);
+	if (height > -30)
+		return (0x8DC1EA);
+	return (0x71ABD8);
+}
+
+static int ft_gradient(float height, t_map_info info)
 {
 	float	t;
 
+	if (info.height_range == 0)
+		return (PURPLE);
+	t = (height - info.min_height) / info.height_range;
+	return (ft_interpolate_color(ORANGE, PURPLE, t));
+}
+
+int	ft_calculate_color(float height, t_map_info info)
+{
+
 	if (info.colorscheme == LANDSCAPE)
-	{
-		if (height < -100)
-			return (DEEPSEA);
-		if (height < 0)
-			return (SEA);
-		if (height < 5)
-			return (SAND);
-		if (height < 35)
-			return (GRASS);
-		else
-			return (SNOW);
-	}
+		return (ft_landscape(height));
 	else
-	{
-		if (info.height_range == 0)
-			return (PURPLE);
-		t = (height - info.min_height) / info.height_range;
-		return (ft_interpolate_color(ORANGE, PURPLE, t));
-	}
+		return (ft_gradient(height, info));
 }
 
