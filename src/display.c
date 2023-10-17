@@ -6,12 +6,11 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 12:38:34 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/16 13:39:22 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:19:37 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
 
 static void	ft_initialize_bresenham_params(t_bresenham_params *p,
 											t_point_coordinates a,
@@ -67,8 +66,7 @@ static void	ft_draw_line(t_point_coordinates a,
 	}
 }
 
-void	ft_draw_map(t_point_coordinates **map, t_map_info info,
-		t_mlx_data *mlx)
+void	ft_draw_map(t_point_coordinates **map, t_map_info info, t_mlx_data *mlx)
 {
 	int	row;
 	int	column;
@@ -81,14 +79,10 @@ void	ft_draw_map(t_point_coordinates **map, t_map_info info,
 		{
 			if (row + 1 < info.rows)
 				ft_draw_line(map[row][column],
-					map[row + 1][column],
-					mlx,
-					info);
+					map[row + 1][column], mlx, info);
 			if (column + 1 < info.columns)
 				ft_draw_line(map[row][column],
-					map[row][column + 1],
-					mlx,
-					info);
+					map[row][column + 1], mlx, info);
 		}
 	}
 }

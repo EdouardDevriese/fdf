@@ -29,7 +29,7 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-void 				ft_putstr(const char *s);
+void				ft_putstr(const char *s);
 int					ft_atoi(const char *nptr);
 int					ft_printf(const char *s, ...);
 void				ft_bzero(void *s, size_t n);
@@ -76,7 +76,7 @@ void				ft_lstadd_back(t_list **lst, t_list *new);
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
-int                 get_next_line(int fd, char **line);
+int					get_next_line(int fd, char **line);
 size_t				ft_strlen_gnl(const char *s);
 size_t				ft_strlcpy_gnl(char *dst, const char *src, size_t size);
 char				*ft_strchr_gnl(const char *s, int c);

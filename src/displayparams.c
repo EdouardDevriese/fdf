@@ -6,7 +6,7 @@
 /*   By: wdevries <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:40:57 by wdevries          #+#    #+#             */
-/*   Updated: 2023/10/16 13:26:55 by wdevries         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:18:41 by wdevries         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	ft_get_min_max_values(t_display_params *dp,
 	while (++row < info.rows)
 	{
 		col = -1;
- 	while (++col < info.columns)
+		while (++col < info.columns)
 		{
 			if (map[row][col].x < dp->min_x)
 				dp->min_x = map[row][col].x;
@@ -54,10 +54,10 @@ void	ft_apply_display_params(t_display_params dp,
 		col = -1;
 		while (++col < info.columns)
 		{
-			(*map)[row][col].x = (*map)[row][col].x
-				* dp.scale_factor + dp.translate_x;
-			(*map)[row][col].y = (*map)[row][col].y
-				* dp.scale_factor + dp.translate_y;
+			(*map)[row][col].x = (*map)[row][col].x * dp.scale_factor
+				+ dp.translate_x;
+			(*map)[row][col].y = (*map)[row][col].y * dp.scale_factor
+				+ dp.translate_y;
 		}
 	}
 }
@@ -66,26 +66,18 @@ void	ft_get_display_params(t_display_params *dp,
 							t_point_coordinates **map,
 							t_map_info info)
 {
-    float range_x;
-    float range_y;
+	float	range_x;
+	float	range_y;
 
 	ft_get_min_max_values(dp, map, info);
-    range_x = dp->max_x - dp->min_x;
-    range_y = dp->max_y - dp->min_y;
-    if (range_x / range_y > (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT)
-        dp->scale_factor = WINDOW_WIDTH / range_x;
-    else
-        dp->scale_factor = WINDOW_HEIGHT / range_y;
-    dp->translate_x = WINDOW_WIDTH / 2 - (dp->min_x + range_x / 2.0) * dp->scale_factor;
-	dp->translate_y = WINDOW_HEIGHT / 2 - (dp->min_y + range_y / 2.0) * dp->scale_factor;
-
-/* 	ft_get_min_max_values(dp, map, info); */
-/* 	dp->scale_factor_x = WINDOW_WIDTH / (dp->max_x */
-/* 			- dp->min_x); */
-/* 	dp->scale_factor_y = WINDOW_HEIGHT / (dp->max_y */
-/* 			- dp->min_y); */
-/* 	dp->translate_x = -(dp->min_x) */
-/* 		* dp->scale_factor_x; */
-/* 	dp->translate_y = -(dp->min_y) */
-/* 		* dp->scale_factor_y; */
+	range_x = dp->max_x - dp->min_x;
+	range_y = dp->max_y - dp->min_y;
+	if (range_x / range_y > (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT)
+		dp->scale_factor = WINDOW_WIDTH / range_x;
+	else
+		dp->scale_factor = WINDOW_HEIGHT / range_y;
+	dp->translate_x = WINDOW_WIDTH / 2 - (dp->min_x + range_x / 2.0)
+		* dp->scale_factor;
+	dp->translate_y = WINDOW_HEIGHT / 2 - (dp->min_y + range_y / 2.0)
+		* dp->scale_factor;
 }

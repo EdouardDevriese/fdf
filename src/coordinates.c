@@ -59,14 +59,13 @@ static t_point_coordinates	ft_project_point(t_point_coordinates old_p)
 	t_point_coordinates	new_p;
 
 	new_p.x = old_p.x - old_p.y;
-	new_p.y = (old_p.x + old_p.y) / 2
-		- old_p.z;
+	new_p.y = (old_p.x + old_p.y) / 2 - old_p.z;
 	new_p.z = old_p.z;
 	return (new_p);
 }
 
 void	ft_apply_isometric_projection(t_point_coordinates ***map,
-											t_map_info map_info)
+									t_map_info map_info)
 {
 	int	row;
 	int	column;
@@ -76,8 +75,7 @@ void	ft_apply_isometric_projection(t_point_coordinates ***map,
 	{
 		column = -1;
 		while (++column < map_info.columns)
-			(*map)[row][column]
-				= ft_project_point((*map)[row][column]);
+			(*map)[row][column] = ft_project_point((*map)[row][column]);
 	}
 }
 

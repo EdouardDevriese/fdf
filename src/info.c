@@ -17,7 +17,8 @@ int	ft_initialize_map(t_point_coordinates ***map,
 {
 	int	i;
 
-	*map = (t_point_coordinates **)malloc(info.rows * sizeof(t_point_coordinates *));
+	*map = (t_point_coordinates **)malloc(info.rows
+			* sizeof(t_point_coordinates *));
 	if (!*map)
 		return (write(1, "System error\n", 13));
 	i = -1;

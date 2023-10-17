@@ -53,7 +53,7 @@ static int	ft_landscape(float height)
 	return (0x71ABD8);
 }
 
-static int ft_gradient(float height, t_map_info info)
+static int	ft_gradient(float height, t_map_info info)
 {
 	float	t;
 
@@ -65,10 +65,8 @@ static int ft_gradient(float height, t_map_info info)
 
 int	ft_calculate_color(float height, t_map_info info)
 {
-
 	if (info.colorscheme == LANDSCAPE)
 		return (ft_landscape(height));
 	else
 		return (ft_gradient(height, info));
 }
-
